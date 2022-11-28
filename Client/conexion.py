@@ -39,17 +39,22 @@ class Registro_datos():
         sql = "CALL ADMIN_CREAR_LOGIN({}, '{}', '{}')".format(doc,user,passwrd)
         cur.execute(sql)
         self.conexion.commit()
+        cur.close()    
         print(cur.rowcount, "record inserted.")
         print('putavida')
 
     def crear_cliente(self,user,name,phone,dir,doc):
         cur = self.conexion.cursor()
-        # sql = "CALL ADMIN_CREAR_CLIENTE({}, '{}', {}, '{}', '{}')".format(doc,name,phone,user,dir)
         sql = "CALL ADMIN_CREAR_CLIENTE({}, '{}', {}, '{}', '{}')".format(doc,name,phone,user,dir)
+        cur.execute(sql)
+        self.conexion.commit()
+        cur.close()    
+        print(cur.rowcount, "record inserted.")
+    
+    def pedido_por_estado(self):
+        cur = self.conexion.cursor()
+        sql = "CALL CLIENTE_VISTA_PEDIDO_ESTADO (1032356058, 'Entregado');"
         cur.execute(sql)
         x = cur.fetchall()
         cur.close()
-        print(x)
-    
-    
         

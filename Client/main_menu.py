@@ -6,17 +6,16 @@ class Frame(tk.Frame):
         super().__init__(root)
         self.root = root
         self.pack()
-        self.config(bg='#FFDDDD')
+        self.config(bg = '#FFDDDD')
 
         #creacion y configuracion de la tabla de pedidos pendientes
-        self.pedidos_pendientes_tabla = ttk.Treeview(self, columns=('Id','Direccion', 'Fecha_de_entrega', 'Costo'))
-        self.scroll_pendientes = ttk.Scrollbar(self,
-                                               orient='vertical', command=self.pedidos_pendientes_tabla.yview)
-        self.pedidos_pendientes_tabla.heading('#0', text='ID')
-        self.pedidos_pendientes_tabla.heading('#1', text='DIRECCION')
-        self.pedidos_pendientes_tabla.heading('#2', text='FECHA DE ENTREGA')
-        self.pedidos_pendientes_tabla.heading('#3', text='COSTO')
-        self.pedidos_pendientes_tabla.config(height=20, yscrollcommand= self.scroll_pendientes.set)
+        self.pedidos_pendientes_tabla = ttk.Treeview(self, columns = ('Id','Direccion', 'Fecha_de_entrega', 'Costo'))
+        self.scroll_pendientes = ttk.Scrollbar(self, orient = 'vertical', command = self.pedidos_pendientes_tabla.yview)
+        self.pedidos_pendientes_tabla.heading('#0', text = 'ID')
+        self.pedidos_pendientes_tabla.heading('#1', text = 'DIRECCION')
+        self.pedidos_pendientes_tabla.heading('#2', text = 'FECHA DE ENTREGA')
+        self.pedidos_pendientes_tabla.heading('#3', text = 'COSTO')
+        self.pedidos_pendientes_tabla.config(height = 20, yscrollcommand = self.scroll_pendientes.set)
 
 
         #datos de ejemplo para la tabla de pedidos pendientes
@@ -31,8 +30,7 @@ class Frame(tk.Frame):
 
         #creacion y configuracion de la tabla pedidos recibidos
         self.pedidos_recibidos_tabla = ttk.Treeview(self, columns=('Id','Direccion', 'Fecha_de_entrega', 'Costo'))
-        self.scroll_recibidos = ttk.Scrollbar(self,
-                                               orient='vertical', command=self.pedidos_recibidos_tabla.yview)
+        self.scroll_recibidos = ttk.Scrollbar(self, orient='vertical', command=self.pedidos_recibidos_tabla.yview)
         self.pedidos_recibidos_tabla.heading('#0', text='ID')
         self.pedidos_recibidos_tabla.heading('#1', text='DIRECCION')
         self.pedidos_recibidos_tabla.heading('#2', text='FECHA DE ENTREGA')
@@ -54,8 +52,7 @@ class Frame(tk.Frame):
        
         # creacion y configuracion de la tabla de productos de un pedido
         self.pedido_producto_tabla = ttk.Treeview(self, columns=('Nombre', 'Precio', 'Cantidad', 'total'))
-        self.scroll_pedido_producto = ttk.Scrollbar(self,
-                                               orient='vertical', command=self.pedido_producto_tabla.yview)
+        self.scroll_pedido_producto = ttk.Scrollbar(self, orient='vertical', command=self.pedido_producto_tabla.yview)
         self.pedido_producto_tabla.heading('#0', text='ID')
         self.pedido_producto_tabla.heading('#1', text='NOMBRE')
         self.pedido_producto_tabla.heading('#2', text='PRECIO')
@@ -103,7 +100,6 @@ class Frame(tk.Frame):
         #creacion y configuracion boton ver pedido xd
         self.ver_pedido_bot = tk.Button(self, text="VER PEDIDO", command=self.ver_pendientes_fun)
         self.ver_pedido_bot.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
-        self.ver_pedido_bot.pack(pady = 10)
 
         # creacion y configuracion boton ver pedido xd
         self.ver_recibido_bot = tk.Button(self, text="VER PEDIDO", command=self.ver_recibidos_fun)
@@ -198,7 +194,9 @@ class Frame(tk.Frame):
         self.pedidos_pendientes_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
         self.scroll_pendientes.grid(row=1, column=4, sticky='nse')
 
-        self.ver_pedido_bot.grid(row=9, column=1, columnspan=2)
+        self.label_blanco = tk.Label(self.master, text= '')
+
+        self.ver_pedido_bot.grid(row=10, column=1, columnspan=2)
 
     def pedidos_recibidos_fun(self):
         self.limpiarventana()

@@ -45,7 +45,10 @@ class Login(Frame):
 
 		root = Tk()
 		root.title('Maria Camila Pasteleria')
+		p5 = PhotoImage(file = 'Client/logo.png')
+		root.iconphoto(False, p5)
 		root.config(bg='#FFDDDD')
+		root.geometry('1100x650+450+200')
 		root.resizable(0,0)		
 		main_menu.Frame(root = root)		
 		root.mainloop()	
