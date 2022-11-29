@@ -31,6 +31,11 @@ class Frame(tk.Frame):
         #creacion y configuracion de la tabla de pedidos pendientes
         self.pedidos_pendientes_tabla = ttk.Treeview(self, columns = ('Id','Direccion', 'Fecha_de_entrega', 'Costo'))
         self.scroll_pendientes = ttk.Scrollbar(self, orient = 'vertical', command = self.pedidos_pendientes_tabla.yview)
+        
+        styl = ttk.Style()
+        styl.configure('Treeview.Heading',font = ('Lucida Sans', 12))
+        styl.configure('Treeview',font = ('Arial', 12))
+
         self.pedidos_pendientes_tabla.heading('#0', text = 'ID')
         self.pedidos_pendientes_tabla.heading('#1', text = 'DIRECCION')
         self.pedidos_pendientes_tabla.heading('#2', text = 'FECHA DE ENTREGA')
@@ -78,27 +83,27 @@ class Frame(tk.Frame):
 
         #creacion y configuracion boton ver pedido xd
         self.ver_pedido_bot = tk.Button(self, text="VER PEDIDO", command=self.ver_pendientes_fun)
-        self.ver_pedido_bot.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
+        self.ver_pedido_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton ver pedido xd
         self.ver_recibido_bot = tk.Button(self, text="VER PEDIDO", command=self.ver_recibidos_fun)
-        self.ver_recibido_bot.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
+        self.ver_recibido_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton cancelar pedido
         self.cancelar_pedido_bot = tk.Button(self, text="CANCELAR PEDIDO", command=self.cancelar_pedido_fun)
-        self.cancelar_pedido_bot.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
+        self.cancelar_pedido_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton CONTINUAR para nuevo pedido
         self.continuar_bot = tk.Button(self, text="CONTINUAR", command=self.continuar_fun)
-        self.continuar_bot.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
+        self.continuar_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton registrar producto para nuevo pedido
         self.registrar_producto_bot = tk.Button(self, text="REGISTRAR PRODUCTO", command=self.registrar_producto_fun)
-        self.continuar_bot.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
+        self.continuar_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton finalizar pedido para nuevo pedido
         self.finalizar_pedido = tk.Button(self, text="FINALIZAR", command=self.pedidos_pendientes_fun)
-        self.finalizar_pedido.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
+        self.finalizar_pedido.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
 
 
@@ -108,19 +113,19 @@ class Frame(tk.Frame):
 
 
         self.label_id_pedido = tk.Label(self, text= 'Id pedido:')
-        self.label_id_pedido.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_id_pedido.config(font=('Arial', 12, 'bold', 'italic'),bg='#FFDDDD')
         self.id_string_var = tk.StringVar() 
         self.id_string_var.set('')
         self.lab_id_pedido = tk.Label(self, textvariable=self.id_string_var)
-        self.lab_id_pedido.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.lab_id_pedido.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.label_direccion = tk.Label(self, text='Direccion:')
-        self.label_direccion.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_direccion.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.dir_string_var = tk.StringVar() 
         self.dir_string_var.set('')
         self.lab_direccion = tk.Label(self, textvariable=self.dir_string_var)
-        self.lab_direccion.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.lab_direccion.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.mi_direccion = tk.StringVar()
@@ -129,11 +134,11 @@ class Frame(tk.Frame):
 
 
         self.label_fecha_entrega = tk.Label(self, text='Fecha de entrega:')
-        self.label_fecha_entrega.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_fecha_entrega.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.fecha_string_var = tk.StringVar() 
         self.fecha_string_var.set('')
         self.lab_fecha_entrega = tk.Label(self, textvariable=self.fecha_string_var)
-        self.lab_fecha_entrega.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.lab_fecha_entrega.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.mi_fecha = tk.StringVar()
@@ -142,17 +147,17 @@ class Frame(tk.Frame):
 
 
         self.label_costo = tk.Label(self, text='Costo:')
-        self.label_costo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_costo.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.costo_string_var = tk.StringVar() 
         self.costo_string_var.set('')
         self.lab_costo = tk.Label(self, textvariable=self.costo_string_var)
-        self.lab_costo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.lab_costo.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
         self.label_productos = tk.Label(self, text='Productos')
-        self.label_productos.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_productos.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
         self.label_cantidad = tk.Label(self, text='Cantidad')
-        self.label_cantidad.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_cantidad.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
 
@@ -162,43 +167,43 @@ class Frame(tk.Frame):
 
 
         self.label_perfil_id = tk.Label(self, text='ID')
-        self.label_perfil_id.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_perfil_id.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.p_id_string_var = tk.StringVar() 
         self.p_id_string_var.set('')
         self.p_lab_id = tk.Label(self, textvariable=self.p_id_string_var)
-        self.p_lab_id.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_lab_id.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.label_perfil_nombre = tk.Label(self, text='NOMBRE')
-        self.label_perfil_nombre.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_perfil_nombre.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.p_nombre_string_var = tk.StringVar() 
         self.p_nombre_string_var.set('')
         self.p_lab_nombre = tk.Label(self, textvariable=self.p_nombre_string_var)
-        self.p_lab_nombre.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_lab_nombre.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.label_perfil_numero = tk.Label(self, text='TELEFONO')
-        self.label_perfil_numero.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_perfil_numero.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.p_numero_string_var = tk.StringVar() 
         self.p_numero_string_var.set('')
         self.p_lab_numero = tk.Label(self, textvariable=self.p_numero_string_var)
-        self.p_lab_numero.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_lab_numero.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.label_perfil_correo = tk.Label(self, text='CORREO')
-        self.label_perfil_correo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_perfil_correo.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.p_correo_string_var = tk.StringVar() 
         self.p_correo_string_var.set('')
         self.p_lab_correo = tk.Label(self, textvariable=self.p_correo_string_var)
-        self.p_lab_correo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_lab_correo.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
         self.label_perfil_dir = tk.Label(self, text='DIRECCION')
-        self.label_perfil_dir.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.label_perfil_dir.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.p_dir_string_var = tk.StringVar() 
         self.p_dir_string_var.set('zi')
         self.p_lab_direccion = tk.Label(self, textvariable=self.p_dir_string_var)
-        self.p_lab_direccion.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_lab_direccion.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
 
 
 
@@ -218,19 +223,19 @@ class Frame(tk.Frame):
 
     def botones_principales(self):
         self.pedidos_pendientes_bot = tk.Button(self, text="PEDIDOS PENDIENTES", command=self.pedidos_pendientes_fun)
-        self.pedidos_pendientes_bot.config(width=20, font=('Arial', 12, 'bold'),fg='#DAD5D6')
+        self.pedidos_pendientes_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'),fg='#DAD5D6')
         self.pedidos_pendientes_bot.grid(row=0, column=0, padx=10, pady=10)
 
         self.pedidos_recibidos_bot = tk.Button(self, text="PEDIDOS RECIBIDOS", command=self.pedidos_recibidos_fun)
-        self.pedidos_recibidos_bot.config(width=20, font=('Arial', 12, 'bold'),fg='#DAD5D6')
+        self.pedidos_recibidos_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'),fg='#DAD5D6')
         self.pedidos_recibidos_bot.grid(row=0, column=1, padx=10, pady=10)
 
         self.nuevo_pedido_bot = tk.Button(self, text="PEDIDO NUEVO", command=self.nuevo_pedido_fun)
-        self.nuevo_pedido_bot.config(width=20, font=('Arial', 12, 'bold'),fg='#DAD5D6')
+        self.nuevo_pedido_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'),fg='#DAD5D6')
         self.nuevo_pedido_bot.grid(row=0, column=2, padx=10, pady=10)
 
         self.perfil_bot = tk.Button(self, text="PERFIL", command=self.perfil_fun)
-        self.perfil_bot.config(width=20, font=('Arial', 12, 'bold'),fg='#DAD5D6')
+        self.perfil_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'),fg='#DAD5D6')
         self.perfil_bot.grid(row=0, column=3, padx=10, pady=10)
 
 
