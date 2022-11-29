@@ -288,12 +288,13 @@ BEGIN
     DECLARE estado VARCHAR(80);
     SELECT ped_estado INTO estado FROM vw_pedido WHERE ID_pedido = id AND id_c = ID_cliente;
     SELECT COUNT(ID_pedido) INTO det_pedido FROM vw_pedido_producto WHERE ID_pedido = id;
-    IF det_pedido > 0 AND estado = 'Realizando' THEN
+    IF det_pedido > 0 AND estado = 'Pendiente' THEN
 		CALL BORRAR_PEDIDO_PRODUCTO(id);
 	END IF;
-    DELETE FROM vw_pedido where ID_pedido = id AND id_c = ID_cliente AND ped_estado = 'Realizando';
+    DELETE FROM vw_pedido where ID_pedido = id AND id_c = ID_cliente AND ped_estado = 'Pendiente';
 END$$
 DELIMITER ;
+
 
 DROP PROCEDURE IF EXISTS CLIENTE_BORRAR_PEDIDO_PRODUCTO;
 DELIMITER $$
@@ -325,7 +326,7 @@ BEGIN
 	END IF;
 END $$
 DELIMITER ;
-CALL CLIENTE_VISTA_PEDIDO_PRODUCTO(1014, 1032356059);
+CALL CLIENTE_VISTA_PEDIDO_PRODUCTO(1002, 1032356058);
 
 
 -- TABLA COMENTARIO
@@ -431,7 +432,7 @@ SELECT @total;
 
 DROP FUNCTION IF EXISTS TOTAL_PEDIDO_PRODUCTO;
 DELIMITER $$
-CREATE FUNCTION TOTAL_PEDIDO_PRODUCTO(cantidad INT, precio INT)
+CREATE FUNCTION TOTAL_PEDIDO_PRODUCTO(cantidad INT, id_producto INT)
 RETURNS INT
 BEGIN
 	DECLARE subtotal INT DEFAULT 0;
@@ -447,15 +448,13 @@ SELECT @subtotal;
 
 DROP PROCEDURE IF EXISTS CLIENTE_CREACION_PEDIDO;
 DELIMITER $$
-CREATE PROCEDURE CLIENTE_CREACION_PEDIDO(IN id INT, IN id_c INT, IN direccion varchar(80), IN fecha_creacion date, IN fecha_entrega date, IN estado varchar(80), IN costo INT)
+CREATE PROCEDURE CLIENTE_CREACION_PEDIDO(IN id INT, IN id_c INT, IN direccion varchar(80), IN fecha_creacion date, IN fecha_entrega date, IN estado varchar(80))
 BEGIN
-	IF costo IS NULL THEN
-		SET costo = 0;
-	END IF;
-	INSERT vw_pedido VALUES (id, id_c, direccion, fecha_creacion, fecha_entrega, estado, costo);
+    SET @total = TOTAL_PEDIDO(id);
+	INSERT vw_pedido VALUES (id, id_c, direccion, fecha_creacion, fecha_entrega, estado, @total);
 END $$
 DELIMITER $$
-CALL CLIENTE_CREACION_PEDIDO (1014, 1032356059, 'cra 20A #171-31', '2022-11-25', '2022-11-30', 'Entregado', @total);
+CALL CLIENTE_CREACION_PEDIDO (2014, 1032356059, 'cra 20A #171-31', '2022-11-25', '2022-11-30', 'Pendiente');
 
 
 DROP PROCEDURE IF EXISTS CLIENTE_CREACION_PEDIDO_PRODUCTO;

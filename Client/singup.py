@@ -3,6 +3,8 @@ from tkinter import  StringVar,END,HORIZONTAL,Frame,Toplevel
 import time
 import conexion, main_menu, login
 
+doc_entry = 0
+
 class Login(Frame):
 	def __init__(self, master, *args):
 		super().__init__( master,*args)
@@ -45,10 +47,12 @@ class Login(Frame):
 
 		root = Tk()
 		root.title('Maria Camila Pasteleria')
-		p5 = PhotoImage(file = 'Client/logo.png')
-		root.iconphoto(False, p5)
+		# p5 = PhotoImage(file = 'Client/logo.png')
+		# root.iconphoto(False, p5)
 		root.config(bg='#FFDDDD')
-		root.geometry('1100x650+450+200')
+		hight = (root.winfo_screenheight())/2
+		width = (root.winfo_screenwidth())/2
+		root.geometry('1100x650+{}+{}'.format(int(width-550),int(hight-325)))
 		root.resizable(0,0)		
 		main_menu.Frame(root = root)		
 		root.mainloop()	
@@ -81,6 +85,7 @@ class Login(Frame):
 			self.datos.crear_login(doc_entry,users_entry,password_entry)
 
 			self.acceder_main()
+			return doc_entry
 
 	
 
@@ -209,11 +214,15 @@ class Login(Frame):
 
 		ventana = Tk()
 		ventana.title('Maria Camila Pasteleria')
-		p3 = PhotoImage(file = 'Client/logo.png')
-		ventana.iconphoto(False, p3)
+		# p3 = PhotoImage(file = 'Client/logo.png')
+		# ventana.iconphoto(False, p3)
 		ventana.config(bg='#FFDDDD')
-		ventana.geometry('400x650+800+200')
+		hight = (ventana.winfo_screenheight())/2
+		width = (ventana.winfo_screenwidth())/2
+		ventana.geometry('400x650+{}+{}'.format(int(width-200),int(hight-325)))
 		ventana.resizable(0,0)
 
 		app = login.Login(ventana)
 		app.mainloop()
+	
+doc_entry = Login.agregar_datos

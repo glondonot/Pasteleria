@@ -3,10 +3,14 @@ from tkinter import  StringVar,END,HORIZONTAL,Frame,Toplevel
 import time
 import conexion, main_menu, singup
 
+ID_usuario_g = 0
+PASSWRD_g = ''
+
+
 class Login(Frame):
 	def __init__(self, master, *args):
 		super().__init__( master,*args)
-		self.user_marcar = "Ingrese su correo"
+		self.user_marcar = "Ingrese su documento"
 		self.contra_marcar = "Ingrese su contraseña"
 		self.fila1 = ''
 		self.fila2 = ''
@@ -20,7 +24,7 @@ class Login(Frame):
 			event.insert(0, event_text)
 		if self.entry2.get() != 'Ingrese su contraseña':
 			self.entry2['show'] =""
-		if self.entry2.get() != 'Ingrese su correo':
+		if self.entry2.get() != 'Ingrese su documento':
 			self.entry2['show'] ="*"
 
 	def entry_in(self, event):
@@ -46,14 +50,19 @@ class Login(Frame):
 		self.master.withdraw()
 		self.salir()
 
+		
+
+
 		root = Tk()
 		root.title('Maria Camila Pasteleria')
-		p4 = PhotoImage(file = 'Client/logo.png')
-		root.iconphoto(False, p4)
+		# p4 = PhotoImage(file = 'Client/logo.png')
+		# root.iconphoto(False, p4)
 		root.config(bg='#FFDDDD')
-		root.geometry('1100x650+450+200')
+		hight = (root.winfo_screenheight())/2
+		width = (root.winfo_screenwidth())/2
+		root.geometry('1100x650+{}+{}'.format(int(width-550),int(hight-325)))
 		root.resizable(0,0)		
-		main_menu.Frame(root)		
+		main_menu.Frame(root)
 		root.mainloop()	
 
 	def verificacion_users(self):
@@ -84,16 +93,20 @@ class Login(Frame):
 						dato1 = dato1[0][1]
 
 					if dato2 == []:
-						self.indica2['text'] = 'Contraseña incorrecta'
+						self.indica2['text'] = 'Contraseña incorrecto'
 					else:
 						dato2 = dato2[0][2]
 
 					if dato1 != [] and dato2 != []:
+						global ID_usuario_g
+						ID_usuario_g = self.entry1.get()
+						global PASSWRD_g
+						PASSWRD_g = self.entry2.get()
 						self.acceder_main()
 
 			else:
 				self.indica1['text'] = 'Usuario incorrecto'
-				self.indica2['text'] = 'Contraseña incorrecta'
+				self.indica2['text'] = 'Contraseña incorrecto'
 
 	def widgets(self):
 		self.logo = PhotoImage(file ='Client/logo.png')
@@ -147,10 +160,12 @@ class Login(Frame):
 
 		ventana2 = Tk()
 		ventana2.title('Maria Camila Pasteleria')
-		p2 = PhotoImage(file = 'Client/logo.png')
-		ventana2.iconphoto(False, p2)
+		# p2 = PhotoImage(file = 'Client/logo.png')
+		# ventana2.iconphoto(False, p2)
 		ventana2.config(bg='#FFDDDD')
-		ventana2.geometry('800x650+600+200')
+		hight = (ventana2.winfo_screenheight())/2
+		width = (ventana2.winfo_screenwidth())/2
+		ventana2.geometry('800x650+{}+{}'.format(int(width-400),int(hight-325)))
 		ventana2.resizable(0,0)		
 		singup.Login(ventana2)		
 		ventana2.mainloop()

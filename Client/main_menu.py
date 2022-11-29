@@ -1,5 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
+import conexion
+#import singup, login
+
+
+
 
 class Frame(tk.Frame):
     def __init__(self, root = None):
@@ -7,6 +12,21 @@ class Frame(tk.Frame):
         self.root = root
         self.pack()
         self.config(bg = '#FFDDDD')
+        self.datos = conexion.Registro_datos(conexion.usr, conexion.psswrd)
+
+        #importa usuario y password global de la sesion del usuario
+        from login import ID_usuario_g, PASSWRD_g
+        self.ID_usuario_g = ID_usuario_g
+        self.PASSWRD_g = PASSWRD_g
+        #da role de cliente a usuario y cambia estos datos en la conexion a la BD
+        self.datos.role_usuario(ID_usuario_g,PASSWRD_g)
+        #self.datos = conexion.Registro_datos(ID_usuario_g, PASSWRD_g)  #usuario no deja ejecutar procedimientos
+        
+
+
+
+
+
 
         #creacion y configuracion de la tabla de pedidos pendientes
         self.pedidos_pendientes_tabla = ttk.Treeview(self, columns = ('Id','Direccion', 'Fecha_de_entrega', 'Costo'))
@@ -18,16 +38,6 @@ class Frame(tk.Frame):
         self.pedidos_pendientes_tabla.config(height = 20, yscrollcommand = self.scroll_pendientes.set)
 
 
-        #datos de ejemplo para la tabla de pedidos pendientes
-        self.pedidos_pendientes_tabla.insert('', 0, text='6', values=('calle 7a #4-52', '25/12/2022', '100000'))
-        self.pedidos_pendientes_tabla.insert('', 0, text='5', values=('calle 7a #4-52', '25/8/2022', '100000'))
-        self.pedidos_pendientes_tabla.insert('', 0, text='4', values=('calle 7a #4-52', '25/7/2022', '100000'))
-        self.pedidos_pendientes_tabla.insert('', 0, text='3', values=('calle 7a #4-52', '25/4/2022', '100000'))
-        self.pedidos_pendientes_tabla.insert('', 0, text='2', values=('calle 7a #4-52', '21/4/2022', '100000'))
-        self.pedidos_pendientes_tabla.insert('', 0, text='1', values=('calle 7a #4-52', '12/11/2022', '100000'))
-        self.pedidos_pendientes_tabla.insert('', 0, text='0', values=('calle 7a #4-52', '22/11/2022', '100000'))
-
-
         #creacion y configuracion de la tabla pedidos recibidos
         self.pedidos_recibidos_tabla = ttk.Treeview(self, columns=('Id','Direccion', 'Fecha_de_entrega', 'Costo'))
         self.scroll_recibidos = ttk.Scrollbar(self, orient='vertical', command=self.pedidos_recibidos_tabla.yview)
@@ -35,19 +45,7 @@ class Frame(tk.Frame):
         self.pedidos_recibidos_tabla.heading('#1', text='DIRECCION')
         self.pedidos_recibidos_tabla.heading('#2', text='FECHA DE ENTREGA')
         self.pedidos_recibidos_tabla.heading('#3', text='COSTO')
-        self.pedidos_recibidos_tabla.config(height=20, yscrollcommand= self.scroll_pendientes.set)
-        # datos de ejemplo para la tabla de pedidos recibidos
-        self.pedidos_recibidos_tabla.insert('', 0, text='6', values=('calle 7a #4-52', '25/12/2022', '20000'))
-        self.pedidos_recibidos_tabla.insert('', 0, text='5', values=('calle 7a #4-52', '25/8/2022', '20000'))
-        self.pedidos_recibidos_tabla.insert('', 0, text='4', values=('calle 7a #4-52', '25/7/2022', '20000'))
-        self.pedidos_recibidos_tabla.insert('', 0, text='3', values=('calle 7a #4-52', '25/4/2022', '20000'))
-        self.pedidos_recibidos_tabla.insert('', 0, text='2', values=('calle 7a #4-52', '21/4/2022', '20000'))
-        self.pedidos_recibidos_tabla.insert('', 0, text='1', values=('calle 7a #4-52', '12/11/2022', '20000'))
-        self.pedidos_recibidos_tabla.insert('', 0, text='0', values=('calle 7a #4-52', '22/11/2022', '20000'))
-
-       
-       
-       
+        self.pedidos_recibidos_tabla.config(height=20, yscrollcommand= self.scroll_pendientes.set)       
        
        
         # creacion y configuracion de la tabla de productos de un pedido
@@ -59,9 +57,6 @@ class Frame(tk.Frame):
         self.pedido_producto_tabla.heading('#3', text='CANTIDAD')
         self.pedido_producto_tabla.heading('#4', text='TOTAL')
         self.pedido_producto_tabla.config(height=6, yscrollcommand=self.scroll_pedido_producto.set)
-
-        # datos de ejemplo para la tabla de pedidos pendientes
-        self.pedido_producto_tabla.insert('', 0, text='1', values=('cupcake', '25000', '6', '123123'))
 
 
         # creacion y configuracion de la tabla de productos de un recibido
@@ -75,26 +70,10 @@ class Frame(tk.Frame):
         self.recibido_producto_tabla.heading('#4', text='TOTAL')
         self.recibido_producto_tabla.config(height=6, yscrollcommand=self.scroll_recibido_producto.set)
 
-        # datos de ejemplo para la tabla de pedidos pendientes
-        self.recibido_producto_tabla.insert('', 0, text='1', values=('torta', '25234', '10', '27361'))
 
 
 
 
-
-
-        # creacion y configuracion de la tabla pedidos recibidos
-        self.productos_tabla = ttk.Treeview(self, columns=('id_producto', 'nombre', 'precio'))
-        self.scroll_productos = ttk.Scrollbar(self,
-                                              orient='vertical', command=self.productos_tabla.yview)
-        self.productos_tabla.heading('#0', text='ID')
-        self.productos_tabla.heading('#1', text='ID PRODUCTO')
-        self.productos_tabla.heading('#2', text='NOMBRE')
-        self.productos_tabla.heading('#3', text='PRECIO')
-        self.productos_tabla.config(height=20, yscrollcommand=self.scroll_pendientes.set)
-        # datos de ejemplo para la tabla de pedidos recibidos
-        self.productos_tabla.insert('', 0, text='6', values=('100', 'pene', 'ayuda dios'))
-        self.productos_tabla.insert('', 0, text='5', values=('101', 'superpene', 'porfa'))
 
 
         #creacion y configuracion boton ver pedido xd
@@ -121,50 +100,121 @@ class Frame(tk.Frame):
         self.finalizar_pedido = tk.Button(self, text="FINALIZAR", command=self.pedidos_pendientes_fun)
         self.finalizar_pedido.config(width=20, font=('Arial', 12, 'bold'), fg='#DAD5D6')
 
+
+
+
+
+
+
+
         self.label_id_pedido = tk.Label(self, text= 'Id pedido:')
         self.label_id_pedido.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
-        self.mi_Id_pedido = tk.StringVar()
-        self.entry_id_pedido = tk.Entry(self, textvariable=self.mi_Id_pedido)
-        self.entry_id_pedido.config(width=50, state='disable', font=('Arial', 12))
-
+        self.id_string_var = tk.StringVar() 
+        self.id_string_var.set('')
+        self.lab_id_pedido = tk.Label(self, textvariable=self.id_string_var)
+        self.lab_id_pedido.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
 
 
         self.label_direccion = tk.Label(self, text='Direccion:')
         self.label_direccion.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.dir_string_var = tk.StringVar() 
+        self.dir_string_var.set('')
+        self.lab_direccion = tk.Label(self, textvariable=self.dir_string_var)
+        self.lab_direccion.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
         self.mi_direccion = tk.StringVar()
         self.entry_direccion = tk.Entry(self, textvariable=self.mi_direccion)
         self.entry_direccion.config(width=50, state='disable', font=('Arial', 12))
 
+
         self.label_fecha_entrega = tk.Label(self, text='Fecha de entrega:')
         self.label_fecha_entrega.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.fecha_string_var = tk.StringVar() 
+        self.fecha_string_var.set('')
+        self.lab_fecha_entrega = tk.Label(self, textvariable=self.fecha_string_var)
+        self.lab_fecha_entrega.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
         self.mi_fecha = tk.StringVar()
         self.entry_fecha_entrega = tk.Entry(self, textvariable=self.mi_fecha)
         self.entry_fecha_entrega.config(width=50, state='disable', font=('Arial', 12))
 
+
         self.label_costo = tk.Label(self, text='Costo:')
         self.label_costo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
-        self.mi_costo = tk.StringVar()
-        self.entry_costo = tk.Entry(self, textvariable=self.mi_costo)
-        self.entry_costo.config(width=50, state='disable', font=('Arial', 12))
+        self.costo_string_var = tk.StringVar() 
+        self.costo_string_var.set('')
+        self.lab_costo = tk.Label(self, textvariable=self.costo_string_var)
+        self.lab_costo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
 
         self.label_productos = tk.Label(self, text='Productos')
         self.label_productos.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
-        self.entry_productos = tk.Entry(self)
-        self.entry_productos.config(width=50, state='disable', font=('Arial', 12))
 
         self.label_cantidad = tk.Label(self, text='Cantidad')
         self.label_cantidad.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
-        self.mi_cantidad = tk.StringVar()
-        self.entry_cantidad = tk.Entry(self, textvariable=self.mi_cantidad)
-        self.entry_cantidad.config(width=15, state='disable', font=('Arial', 12))
+
+
+
+
+
+
+
+
+        self.label_perfil_id = tk.Label(self, text='ID')
+        self.label_perfil_id.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_id_string_var = tk.StringVar() 
+        self.p_id_string_var.set('')
+        self.p_lab_id = tk.Label(self, textvariable=self.p_id_string_var)
+        self.p_lab_id.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
+        self.label_perfil_nombre = tk.Label(self, text='NOMBRE')
+        self.label_perfil_nombre.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_nombre_string_var = tk.StringVar() 
+        self.p_nombre_string_var.set('')
+        self.p_lab_nombre = tk.Label(self, textvariable=self.p_nombre_string_var)
+        self.p_lab_nombre.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
+        self.label_perfil_numero = tk.Label(self, text='TELEFONO')
+        self.label_perfil_numero.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_numero_string_var = tk.StringVar() 
+        self.p_numero_string_var.set('')
+        self.p_lab_numero = tk.Label(self, textvariable=self.p_numero_string_var)
+        self.p_lab_numero.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
+        self.label_perfil_correo = tk.Label(self, text='CORREO')
+        self.label_perfil_correo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_correo_string_var = tk.StringVar() 
+        self.p_correo_string_var.set('')
+        self.p_lab_correo = tk.Label(self, textvariable=self.p_correo_string_var)
+        self.p_lab_correo.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
+        self.label_perfil_dir = tk.Label(self, text='DIRECCION')
+        self.label_perfil_dir.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+        self.p_dir_string_var = tk.StringVar() 
+        self.p_dir_string_var.set('zi')
+        self.p_lab_direccion = tk.Label(self, textvariable=self.p_dir_string_var)
+        self.p_lab_direccion.config(font=('Arial', 12, 'bold'), bg='#FFFFFF')
+
+
 
 
         self.botones_principales()
         self.pedidos_pendientes_fun()
 
+
+
+
     def salir(self):
         self.root.destroy()
         self.root.quit()
+
+
+
 
     def botones_principales(self):
         self.pedidos_pendientes_bot = tk.Button(self, text="PEDIDOS PENDIENTES", command=self.pedidos_pendientes_fun)
@@ -183,6 +233,11 @@ class Frame(tk.Frame):
         self.perfil_bot.config(width=20, font=('Arial', 12, 'bold'),fg='#DAD5D6')
         self.perfil_bot.grid(row=0, column=3, padx=10, pady=10)
 
+
+
+
+
+
     def pedidos_pendientes_fun(self):
         self.limpiarventana()
         self.pedidos_pendientes_bot.config(state='disabled')
@@ -192,11 +247,19 @@ class Frame(tk.Frame):
 
         #mostrar lo necesario para la interfaz de pedidos pendientes
         self.pedidos_pendientes_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
+        self.entregado = 'Pendiente'
+        c , ped_pend = self.datos.pedido_por_estado(self.ID_usuario_g, self.entregado)
+        for i in range(0,c):
+            eval ("self.pedidos_pendientes_tabla.insert('', 0 , text=" + str(ped_pend[i][0]) +", values =('"+ str(ped_pend[i][2]) +"', '"+ str(ped_pend[i][4]) +"', '"+ str(ped_pend[i][6]) +"' ))")
+        
         self.scroll_pendientes.grid(row=1, column=4, sticky='nse')
 
         self.label_blanco = tk.Label(self.master, text= '')
 
         self.ver_pedido_bot.grid(row=10, column=1, columnspan=2)
+
+
+
 
     def pedidos_recibidos_fun(self):
         self.limpiarventana()
@@ -207,40 +270,19 @@ class Frame(tk.Frame):
 
         # mostrar lo necesario para la interfaz de pedidos recibidos
         self.pedidos_recibidos_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
+        self.entregado = 'Entregado'
+        c , ped_entre = self.datos.pedido_por_estado(self.ID_usuario_g, self.entregado)
+        for i in range(0,c):
+            eval ("self.pedidos_recibidos_tabla.insert('', 0 , text=" + str(ped_entre[i][0]) +", values =('"+ str(ped_entre[i][2]) +"', '"+ str(ped_entre[i][4]) +"', '"+ str(ped_entre[i][6]) +"' ))")
         self.scroll_recibidos.grid(row=1, column=4, sticky='nse')
         self.ver_recibido_bot.grid(row=9,column=1,columnspan=2)
-        print("mostrando pedidos recibidos")
-
-    def nuevo_pedido_fun(self):
-
-        self.limpiarventana()
-        self.entry_direccion.config(state='normal')
-        self.label_direccion.grid(row=1, column=0, padx=10, pady=10)
-        self.entry_direccion.grid(row=1, column=1, padx=10, pady=10, columnspan=2)
-#########
-        self.entry_fecha_entrega.config(state='normal')
-        self.label_fecha_entrega.grid(row=2, column=0, padx=10, pady=10)
-        self.entry_fecha_entrega.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
-
-        self.direccion = self.entry_direccion.get()
-        self.fecha = self.entry_fecha_entrega.get()
-
-        self.continuar_bot.grid(row=3,column=1,columnspan=2)
-
-        self.pedidos_pendientes_bot.config(state='normal')
-        self.pedidos_recibidos_bot.config(state='normal')
-        self.nuevo_pedido_bot.config(state='disabled')
-        self.perfil_bot.config(state='normal')
-        print("mostrando nuevo pedido")
-
-    def perfil_fun(self):
-        self.pedidos_pendientes_bot.config(state='normal')
-        self.pedidos_recibidos_bot.config(state='normal')
-        self.nuevo_pedido_bot.config(state='normal')
-        self.perfil_bot.config(state='disabled')
-        print("mostrando perfil")
 
 
+
+
+
+
+    
     #primer funcion, de aca se supone que se selecciona un pedido de la tabla de pedidos al darle a esta funcion
     #en este frame hay un boton que es el que esta abajo de nombre cancelar_pedido_fun en ese tienen que poner practicamente
     #para eliminar el pedido con lo que tienen hay
@@ -257,23 +299,38 @@ class Frame(tk.Frame):
         if (self.id_pedido != ''):
 
             self.limpiarventana()
-
             self.label_id_pedido.grid(row=1,column=0, padx=10, pady=10)
-            self.entry_id_pedido.grid(row=1, column=1, padx=10, pady=10,columnspan=2)
+            self.lab_id_pedido.grid(row=1, column=1, padx=10, pady=10,columnspan=2)
+            self.id_string_var.set(self.id_pedido)            
 
             self.label_direccion.grid(row=2, column=0, padx=10, pady=10)
-            self.entry_direccion.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
+            self.lab_direccion.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
+            self.dir_string_var.set(self.direccion_pedido)
 
             self.label_fecha_entrega.grid(row=3, column=0, padx=10, pady=10)
-            self.entry_fecha_entrega.grid(row=3, column=1, padx=10, pady=10, columnspan=2)
+            self.lab_fecha_entrega.grid(row=3, column=1, padx=10, pady=10, columnspan=2)
+            self.fecha_string_var.set(self.fecha_pedido)
 
             self.label_costo.grid(row=4, column=0, padx=10, pady=10)
-            self.entry_costo.grid(row=4, column=1, padx=10, pady=10, columnspan=2)
+            self.lab_costo.grid(row=4, column=1, padx=10, pady=10, columnspan=2)
+            self.costo_string_var.set(self.costo_pedido)
 
             # mostrar lo necesario para la interfaz de pedidos recibidos
+
+            c , prod_pend = self.datos.poducto_por_pedido(self.ID_usuario_g, self.id_pedido)
+            for i in range(0,c):
+                eval ("self.pedido_producto_tabla.insert('', 0 , text=" + str(prod_pend[i][1]) +", values =('"+ str(prod_pend[i][2]) +"', '"+ str(prod_pend[i][3]) +"', '"+ str(prod_pend[i][4]) +"', '"+ str(prod_pend[i][4] * prod_pend[i][3])+"' ))")
+        
+
             self.pedido_producto_tabla.grid(row=5, column=0, columnspan=4, sticky='nse')
             self.scroll_pedido_producto.grid(row=5, column=4, sticky='nse')
             self.cancelar_pedido_bot.grid(row=7, column=1, columnspan=2)
+
+
+    def cancelar_pedido_fun(self):
+        self.datos.eliminar_pedido(self.ID_usuario_g, self.id_pedido)
+        self.pedidos_pendientes_fun()
+
 
     def ver_recibidos_fun(self):
         try:
@@ -286,27 +343,96 @@ class Frame(tk.Frame):
             pass
 
         if (self.id_pedido != ''):
-            self.limpiarventana()
 
+            self.limpiarventana()
             self.label_id_pedido.grid(row=1,column=0, padx=10, pady=10)
-            self.entry_id_pedido.grid(row=1, column=1, padx=10, pady=10,columnspan=2)
+            self.lab_id_pedido.grid(row=1, column=1, padx=10, pady=10,columnspan=2)
+            self.id_string_var.set(self.id_pedido)            
 
             self.label_direccion.grid(row=2, column=0, padx=10, pady=10)
-            self.entry_direccion.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
+            self.lab_direccion.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
+            self.dir_string_var.set(self.direccion_pedido)
 
             self.label_fecha_entrega.grid(row=3, column=0, padx=10, pady=10)
-            self.entry_fecha_entrega.grid(row=3, column=1, padx=10, pady=10, columnspan=2)
+            self.lab_fecha_entrega.grid(row=3, column=1, padx=10, pady=10, columnspan=2)
+            self.fecha_string_var.set(self.fecha_pedido)
 
             self.label_costo.grid(row=4, column=0, padx=10, pady=10)
-            self.entry_costo.grid(row=4, column=1, padx=10, pady=10, columnspan=2)
+            self.lab_costo.grid(row=4, column=1, padx=10, pady=10, columnspan=2)
+            self.costo_string_var.set(self.costo_pedido)
 
             # mostrar lo necesario para la interfaz de pedidos recibidos
+
+            c , prod_pend = self.datos.poducto_por_pedido(self.ID_usuario_g, self.id_pedido)
+            for i in range(0,c):
+                eval ("self.recibido_producto_tabla.insert('', 0 , text=" + str(prod_pend[i][1]) +", values =('"+ str(prod_pend[i][2]) +"', '"+ str(prod_pend[i][3]) +"', '"+ str(prod_pend[i][4]) +"', '"+ str(prod_pend[i][4] * prod_pend[i][3])+"' ))")
+        
+
             self.recibido_producto_tabla.grid(row=5, column=0, columnspan=4, sticky='nse')
             self.scroll_recibido_producto.grid(row=5, column=4, sticky='nse')
             #self.cancelar_pedido_bot.grid(row=7, column=1, columnspan=2)
 
-    def cancelar_pedido_fun(self):
-        self.pedidos_pendientes_fun()
+
+
+
+    def perfil_fun(self):
+        
+        self.limpiarventana()
+
+        datos_usuario = self.datos.ver_perfil(self.ID_usuario_g)
+
+        self.label_perfil_id.grid(row=1,column=1, padx=10, pady=30)
+        self.p_lab_id.grid(row=1, column=2, padx=10, pady=10)
+        self.p_id_string_var.set(datos_usuario[0][0])
+
+        self.label_perfil_nombre.grid(row=2,column=1, padx=10, pady=30)
+        self.p_lab_nombre.grid(row=2, column=2, padx=10, pady=10)
+        self.p_nombre_string_var.set(datos_usuario[0][1])
+        
+        self.label_perfil_numero.grid(row=3,column=1, padx=10, pady=30)
+        self.p_lab_numero.grid(row=3, column=2, padx=10, pady=10)
+        self.p_numero_string_var.set(datos_usuario[0][2])
+
+        self.label_perfil_correo.grid(row=4,column=1, padx=10, pady=30)
+        self.p_lab_correo.grid(row=4, column=2, padx=10, pady=10)
+        self.p_correo_string_var.set(datos_usuario[0][3])
+
+        self.label_perfil_dir.grid(row=5,column=1, padx=10, pady=30)
+        self.p_lab_direccion.grid(row=5, column=2, padx=10, pady=10)
+        self.p_dir_string_var.set(datos_usuario[0][4])
+        
+
+        self.pedidos_pendientes_bot.config(state='normal')
+        self.pedidos_recibidos_bot.config(state='normal')
+        self.nuevo_pedido_bot.config(state='normal')
+        self.perfil_bot.config(state='disabled')
+
+
+
+
+
+    
+
+    def nuevo_pedido_fun(self):
+
+        self.limpiarventana()
+        self.entry_direccion.config(state='normal')
+        self.label_direccion.grid(row=1, column=0, padx=10, pady=10)
+        self.entry_direccion.grid(row=1, column=1, padx=10, pady=10, columnspan=2)
+        self.entry_fecha_entrega.config(state='normal')
+        self.label_fecha_entrega.grid(row=2, column=0, padx=10, pady=10)
+        self.entry_fecha_entrega.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
+
+        self.direccion = self.entry_direccion.get()
+        self.fecha = self.entry_fecha_entrega.get()
+
+        self.continuar_bot.grid(row=3,column=1,columnspan=2)
+
+        self.pedidos_pendientes_bot.config(state='normal')
+        self.pedidos_recibidos_bot.config(state='normal')
+        self.nuevo_pedido_bot.config(state='disabled')
+        self.perfil_bot.config(state='normal')
+        print("mostrando nuevo pedido")
 
     #en esta funcion cuyo nombre quedo de la puta mrda va el codigo para crear un nuevo pedido en la tabla pedidos
     #el codigo para el producto_pedido  o algo asi va en la de registrar_producto_fun
@@ -344,7 +470,24 @@ class Frame(tk.Frame):
 
 
 
+
+
+
+    def limpiartablas(self):
+        for item in self.pedidos_pendientes_tabla .get_children():
+            self.pedidos_pendientes_tabla .delete(item)
+
+        for item in self.pedidos_recibidos_tabla .get_children():
+            self.pedidos_recibidos_tabla .delete(item)
+
+        for item in self.pedido_producto_tabla .get_children():
+            self.pedido_producto_tabla .delete(item)
+        
+        for item in self.recibido_producto_tabla .get_children():
+            self.recibido_producto_tabla .delete(item)
+
     def limpiarventana(self):
+        self.limpiartablas()
         self.finalizar_pedido.grid_forget()
         self.pedidos_pendientes_tabla.grid_forget()
         self.scroll_pendientes.grid_forget()
@@ -354,28 +497,37 @@ class Frame(tk.Frame):
         self.scroll_pedido_producto.grid_forget()
         self.recibido_producto_tabla.grid_forget()
         self.scroll_recibido_producto.grid_forget()
-        self.productos_tabla.grid_forget()
-        self.scroll_productos.grid_forget()
+        #self.productos_tabla.grid_forget()
+        #self.scroll_productos.grid_forget()
         self.ver_pedido_bot.grid_forget()
         self.ver_recibido_bot.grid_forget()
         self.cancelar_pedido_bot.grid_forget()
         self.label_id_pedido.grid_forget()
-        self.entry_id_pedido.grid_forget()
+        self.lab_id_pedido.grid_forget()
         self.label_costo.grid_forget()
-        self.entry_costo.grid_forget()
+        self.lab_costo.grid_forget()
         self.label_productos.grid_forget()
-        self.entry_productos.grid_forget()
+        #self.lab_productos.grid_forget()
         self.label_direccion.grid_forget()
-        self.entry_direccion.grid_forget()
+        self.lab_direccion.grid_forget()
         self.label_fecha_entrega.grid_forget()
-        self.entry_fecha_entrega.grid_forget()
+        self.lab_fecha_entrega.grid_forget()
         self.label_cantidad.grid_forget()
-        self.entry_cantidad.grid_forget()
+        #self.lab_cantidad.grid_forget()
         self.continuar_bot.grid_forget()
         self.registrar_producto_bot.grid_forget()
-        self.mi_costo.set('')
-        self.mi_direccion.set('')
-        self.mi_fecha.set('')
-        self.mi_Id_pedido.set('')
-        self.mi_cantidad.set('')
+        self.entry_fecha_entrega.grid_forget()
+        self.entry_direccion.grid_forget()
+
+        self.label_perfil_nombre.grid_forget()
+        self.label_perfil_numero.grid_forget()
+        self.label_perfil_dir.grid_forget()
+        self.label_perfil_correo.grid_forget()
+        self.label_perfil_id.grid_forget()
+
+        self.p_lab_id.grid_forget()
+        self.p_lab_nombre.grid_forget()
+        self.p_lab_numero.grid_forget()
+        self.p_lab_correo.grid_forget()
+        self.p_lab_direccion.grid_forget()
 

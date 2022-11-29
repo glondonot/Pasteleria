@@ -13,12 +13,13 @@ DROP TABLE IF EXISTS ancheta;
 DROP TABLE IF EXISTS cupcake;
 DROP TABLE IF EXISTS ponque;
 DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS login_datos;
 
 CREATE TABLE cliente
 (
 	ID_cliente	 			int	 		 PRIMARY KEY, 
     cli_nombre				varchar(80)	 NOT NULL,
-    cli_numero				varchar(80)  NOT NULL,
+    cli_numero				int			 NOT NULL,
     cli_correo				varchar(80)	 NOT NULL,
     cli_direccion			varchar(80)	 NULL
 );
@@ -125,7 +126,7 @@ CREATE TABLE pedido
     ped_costo				int			  NOT NULL
 );
 
-insert into pedido values(1000, 52267126  , 'cra 20A #171-31'        , '2022-01-04' , '2022-01-07', 'Entregado' , 58000); 
+insert into pedido values(999, 1032356058 , 'cra 20A #171-31'        , '2022-01-04' , '2022-01-07', 'Entregado' , 58000); 
 insert into pedido values(1001, 1000356059, 'cra 45A #26-53'         , '2022-02-15' , '2022-02-17', 'Entregado' , 48000); 
 insert into pedido values(1002, 1032356058, 'cra 19A #30-11'         , '2022-03-09' , '2022-03-12', 'Entregado' , 105000);
 insert into pedido values(1003, 1032356057, 'cra 18A #75-90'         , '2022-03-19' , '2022-03-22', 'Entregado' , 21000);
@@ -138,7 +139,7 @@ insert into pedido values(1009, 1038123456, 'calle 63 #68-56 bis sur', '2022-04-
 insert into pedido values(1010, 1032356058, 'cra 19A #30-11'         , '2022-05-09' , '2022-05-12', 'Entregado' , 140000);
 insert into pedido values(1011, 52267126  , 'cra 20A #171-31'        , '2022-06-04' , '2022-06-07', 'Entregado' , 270000);
 insert into pedido values(1012, 1000356059, 'cra 67D #59-68'         , '2022-06-15' , '2022-06-17', 'Entregado' , 48000);
-insert into pedido values(1013, 1032356059, 'cra 20A #171-31'        , '2022-10-29' , '2022-10-31', 'Realizando', 42000);
+insert into pedido values(1016, 1032356058, 'cra 20A #171-31'        , '2022-10-29' , '2022-10-31', 'Pendiente', 42000);
 
 CREATE TABLE pedido_producto
 (
@@ -155,6 +156,7 @@ insert into pedido_producto values(1000, 109, 'Cupcakes Sunday'                 
 insert into pedido_producto values(1000, 114, 'Ponqué de Cumpleaños Clásico Pequeño'  , 37000 , 1, 37000);
 insert into pedido_producto values(1001, 121, 'Dripcake de cumpleaños'                , 48000 , 1, 48000);
 insert into pedido_producto values(1002, 107, 'Carrito de Dulces'                     , 105000, 1, 105000);
+insert into pedido_producto values(1002, 107, 'Carrito de Dulces'                     , 105000, 2, 105000);
 insert into pedido_producto values(1003, 112, 'Cupcakes para Mamá'                    , 21000 , 1, 21000);
 insert into pedido_producto values(1004, 124, 'Torta de Fresas en Smoking Extragrande', 85000 , 1, 85000);
 insert into pedido_producto values(1004, 108, 'Cupcakes de Chocolate Especiales'      , 21000 , 1, 21000);
@@ -425,17 +427,16 @@ insert into compra_inventario values( 10002, 41, 'Flores'          ,  10, 6000, 
 insert into compra_inventario values( 10002, 34, 'Copas de cristal',  9, 42000, 378000, 'Aromas y Sabores', 'Cra 17 52-71');
 insert into compra_inventario values( 10002, 35, 'Mugs'            ,  8, 10800, 86400 , 'Aromas y Sabores', 'Cra 17 52-71');
 
-
+DROP TABLE IF EXISTS login_datos;
 CREATE TABLE login_datos
 (
-	ID_cliente			int			  NOT NULL,
+	ID_cliente			int			  PRIMARY KEY,
     login_usuario		varchar(80)	  NOT NULL,
-    login_password		varchar(80)	  NOT NULL,
-    FOREIGN KEY (ID_cliente) REFERENCES cliente(ID_cliente)
+    login_password		varchar(80)	  NOT NULL
 );
 
-insert into login_datos values(	1032356059, 'gguzmanr@unal.edu.co'    , '1234');
-insert into login_datos values(	1032356058, 'glondonot@unal.edu.co'   , '2345');
+-- insert into login_datos values(	1032356059, 'gguzmanr@unal.edu.co'    , '1234');
+insert into login_datos values(	1032356058, 'glondonot@unal.edu.co'   , '1');
 insert into login_datos values(	1032356057, 'bforerob@unal.edu.co'    , '1357');
 insert into login_datos values(	1000381967, 'jhunter@unal.edu.co'     , '2468');
 insert into login_datos values(	1026381706, 'ggallegosr@unal.edu.co'  , '4321');
@@ -444,3 +445,4 @@ insert into login_datos values(	1032381967, 'srestreporo@unal.edu.co' , '1324');
 insert into login_datos values(	52267126  , 'sgcortazar@hotmal.com'   , '4231');
 insert into login_datos values( 1038123456, 'gonzalomolanos@gmail.com', '3564');
 insert into login_datos values(	1011160559, 'cbuitragom@gmail.com'    , '7564');
+insert into login_datos values(	1, 'a'    , 'a');
