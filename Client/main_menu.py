@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 import conexion
-#import singup, login
+import singup, login
 
-
+DIRECCION_g = ''
 
 
 class Frame(tk.Frame):
@@ -18,9 +18,12 @@ class Frame(tk.Frame):
         from login import ID_usuario_g, PASSWRD_g
         self.ID_usuario_g = ID_usuario_g
         self.PASSWRD_g = PASSWRD_g
+        self.DIRECCION_g = DIRECCION_g
+        print(1,ID_usuario_g)
+        print(2,self.ID_usuario_g)
         #da role de cliente a usuario y cambia estos datos en la conexion a la BD
         self.datos.role_usuario(ID_usuario_g,PASSWRD_g)
-        #self.datos = conexion.Registro_datos(ID_usuario_g, PASSWRD_g)  #usuario no deja ejecutar procedimientos
+        self.datos = conexion.Registro_datos(ID_usuario_g, PASSWRD_g)  #usuario no deja ejecutar procedimientos
         
 
 
@@ -34,7 +37,7 @@ class Frame(tk.Frame):
         
         styl = ttk.Style()
         styl.configure('Treeview.Heading',font = ('Lucida Sans', 12))
-        styl.configure('Treeview',font = ('Arial', 12))
+        styl.configure('Treeview',font = ('Arial', 12), width = 500)
 
         self.pedidos_pendientes_tabla.heading('#0', text = 'ID')
         self.pedidos_pendientes_tabla.heading('#1', text = 'DIRECCION')
@@ -61,19 +64,27 @@ class Frame(tk.Frame):
         self.pedido_producto_tabla.heading('#2', text='PRECIO')
         self.pedido_producto_tabla.heading('#3', text='CANTIDAD')
         self.pedido_producto_tabla.heading('#4', text='TOTAL')
-        self.pedido_producto_tabla.config(height=6, yscrollcommand=self.scroll_pedido_producto.set)
+        self.pedido_producto_tabla.config(height=10, yscrollcommand=self.scroll_pedido_producto.set)
 
 
         # creacion y configuracion de la tabla de productos de un recibido
         self.recibido_producto_tabla = ttk.Treeview(self, columns=('Nombre', 'Precio', 'Cantidad', 'total'))
-        self.scroll_recibido_producto = ttk.Scrollbar(self,
-                                                    orient='vertical', command=self.recibido_producto_tabla.yview)
+        self.scroll_recibido_producto = ttk.Scrollbar(self, orient='vertical', command=self.recibido_producto_tabla.yview)
         self.recibido_producto_tabla.heading('#0', text='ID')
         self.recibido_producto_tabla.heading('#1', text='NOMBRE')
         self.recibido_producto_tabla.heading('#2', text='PRECIO')
         self.recibido_producto_tabla.heading('#3', text='CANTIDAD')
         self.recibido_producto_tabla.heading('#4', text='TOTAL')
-        self.recibido_producto_tabla.config(height=6, yscrollcommand=self.scroll_recibido_producto.set)
+        self.recibido_producto_tabla.config(height=10, yscrollcommand=self.scroll_recibido_producto.set)
+
+        # creacion y configuracion de la tabla productos
+        self.productos_tabla = ttk.Treeview(self, columns=('id_producto', 'nombre', 'precio',''))
+        self.scroll_productos = ttk.Scrollbar(self, orient='vertical', command=self.productos_tabla.yview)
+        self.productos_tabla.heading('#0', text='ID PRODUCTO')
+        self.productos_tabla.heading('#1', text='NOMBRE')
+        self.productos_tabla.heading('#2', text='PRECIO')
+        self.productos_tabla.heading('#3', text='')
+        self.productos_tabla.config(height=20, yscrollcommand=self.scroll_pendientes.set)
 
 
 
@@ -94,15 +105,15 @@ class Frame(tk.Frame):
         self.cancelar_pedido_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton CONTINUAR para nuevo pedido
-        self.continuar_bot = tk.Button(self, text="CONTINUAR", command=self.continuar_fun)
+        self.continuar_bot = tk.Button(self, text="CONTINUAR", command=self.productos_fun)
         self.continuar_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton registrar producto para nuevo pedido
-        self.registrar_producto_bot = tk.Button(self, text="REGISTRAR PRODUCTO", command=self.registrar_producto_fun)
-        self.continuar_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
+        self.registrar_producto_bot = tk.Button(self, text="AGREGAR PRODUCTO", command=self.registrar_producto_fun)
+        self.registrar_producto_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
         # creacion y configuracion boton finalizar pedido para nuevo pedido
-        self.finalizar_pedido = tk.Button(self, text="FINALIZAR", command=self.pedidos_pendientes_fun)
+        self.finalizar_pedido = tk.Button(self, text="FINALIZAR PEDIDO", command=self.agregar_pedido_fun)
         self.finalizar_pedido.config(width=20, font=('Arial', 12, 'bold', 'italic'), fg='#DAD5D6')
 
 
@@ -201,9 +212,22 @@ class Frame(tk.Frame):
         self.label_perfil_dir = tk.Label(self, text='DIRECCION')
         self.label_perfil_dir.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
         self.p_dir_string_var = tk.StringVar() 
-        self.p_dir_string_var.set('zi')
+        self.p_dir_string_var.set('')
         self.p_lab_direccion = tk.Label(self, textvariable=self.p_dir_string_var)
         self.p_lab_direccion.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
+
+
+        self.label_perfil_cantidad = tk.Label(self, text='TOTAL DE PEDIDOS')
+        self.label_perfil_cantidad.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
+        self.p_cantidad_string_var = tk.StringVar() 
+        self.p_cantidad_string_var.set('')
+        self.p_lab_cantidad = tk.Label(self, textvariable=self.p_cantidad_string_var)
+        self.p_lab_cantidad.config(font=('Arial', 12, 'bold', 'italic'), bg='#FFDDDD')
+
+
+        self.mi_cantidad = tk.StringVar()
+        self.entry_cantidad = tk.Entry(self, textvariable=self.mi_cantidad)
+        self.entry_cantidad.config(width=15, state='disable', font=('Arial', 12))
 
 
 
@@ -230,7 +254,7 @@ class Frame(tk.Frame):
         self.pedidos_recibidos_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'),fg='#DAD5D6')
         self.pedidos_recibidos_bot.grid(row=0, column=1, padx=10, pady=10)
 
-        self.nuevo_pedido_bot = tk.Button(self, text="PEDIDO NUEVO", command=self.nuevo_pedido_fun)
+        self.nuevo_pedido_bot = tk.Button(self, text="PEDIDO NUEVO", command=self.productos_fun)
         self.nuevo_pedido_bot.config(width=20, font=('Arial', 12, 'bold', 'italic'),fg='#DAD5D6')
         self.nuevo_pedido_bot.grid(row=0, column=2, padx=10, pady=10)
 
@@ -249,6 +273,9 @@ class Frame(tk.Frame):
         self.pedidos_recibidos_bot.config(state='normal')
         self.nuevo_pedido_bot.config(state='normal')
         self.perfil_bot.config(state='normal')
+
+        dir_glob = self.datos.ver_perfil(self.ID_usuario_g)
+        self.DIRECCION_g = dir_glob[0][4]
 
         #mostrar lo necesario para la interfaz de pedidos pendientes
         self.pedidos_pendientes_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
@@ -385,6 +412,7 @@ class Frame(tk.Frame):
         self.limpiarventana()
 
         datos_usuario = self.datos.ver_perfil(self.ID_usuario_g)
+        print(datos_usuario)
 
         self.label_perfil_id.grid(row=1,column=1, padx=10, pady=30)
         self.p_lab_id.grid(row=1, column=2, padx=10, pady=10)
@@ -405,6 +433,14 @@ class Frame(tk.Frame):
         self.label_perfil_dir.grid(row=5,column=1, padx=10, pady=30)
         self.p_lab_direccion.grid(row=5, column=2, padx=10, pady=10)
         self.p_dir_string_var.set(datos_usuario[0][4])
+
+        
+
+        self.cantidad_ped = self.datos.cantidad_pedidos(self.ID_usuario_g)
+        
+        self.label_perfil_cantidad.grid(row=6,column=1, padx=10, pady=30)
+        self.p_lab_cantidad.grid(row=6, column=2, padx=10, pady=10)
+        self.p_cantidad_string_var.set(self.cantidad_ped)
         
 
         self.pedidos_pendientes_bot.config(state='normal')
@@ -416,80 +452,79 @@ class Frame(tk.Frame):
 
 
 
-    
 
-    def nuevo_pedido_fun(self):
 
-        self.limpiarventana()
-        self.entry_direccion.config(state='normal')
-        self.label_direccion.grid(row=1, column=0, padx=10, pady=10)
-        self.entry_direccion.grid(row=1, column=1, padx=10, pady=10, columnspan=2)
-        self.entry_fecha_entrega.config(state='normal')
-        self.label_fecha_entrega.grid(row=2, column=0, padx=10, pady=10)
-        self.entry_fecha_entrega.grid(row=2, column=1, padx=10, pady=10, columnspan=2)
-
-        self.direccion = self.entry_direccion.get()
-        self.fecha = self.entry_fecha_entrega.get()
-
-        self.continuar_bot.grid(row=3,column=1,columnspan=2)
-
+    #en esta funcion cuyo nombre quedo de la puta mrda va el codigo para crear un nuevo pedido en la tabla pedidos
+    #el codigo para el producto_pedido  o algo asi va en la de registrar_producto_fun
+    def productos_fun(self):
         self.pedidos_pendientes_bot.config(state='normal')
         self.pedidos_recibidos_bot.config(state='normal')
         self.nuevo_pedido_bot.config(state='disabled')
         self.perfil_bot.config(state='normal')
-        print("mostrando nuevo pedido")
 
-    #en esta funcion cuyo nombre quedo de la puta mrda va el codigo para crear un nuevo pedido en la tabla pedidos
-    #el codigo para el producto_pedido  o algo asi va en la de registrar_producto_fun
-    def continuar_fun(self):
-        if(self.entry_direccion.get()!= '' and self.entry_fecha_entrega.get()!=''):
-            self.limpiarventana()
+        self.limpiarventana()
 
-            self.productos_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
-            self.scroll_productos.grid(row=1, column=4, sticky='nse')
-            self.entry_cantidad.config(state='normal')
-            self.label_cantidad.grid(row=8, column=0)
-            self.entry_cantidad.grid(row=8, column=1)
-            self.registrar_producto_bot.grid(row=8,column=2)
-            self.finalizar_pedido.grid(row=8, column=3)
+        self.datos.crear_pedido(self.ID_usuario_g,self.DIRECCION_g)
+
+        #self.pedidos_pendientes_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
+        self.productos_tabla.grid(row=1, column=0, columnspan=4, sticky='nse')
+        self.scroll_productos.grid(row=1, column=4, sticky='nse')
+        self.entry_cantidad.config(state='normal')
+        self.label_cantidad.grid(row=8, column=0)
+        self.entry_cantidad.grid(row=8, column=1)
+        self.registrar_producto_bot.grid(row=8,column=2)
+        self.finalizar_pedido.grid(row=8, column=3)
+
+        c , prod_1 = self.datos.ver_productos_1()
+        for i in range(0,c):
+            eval ("self.productos_tabla.insert('', 0 , text=" + str(prod_1[i][0]) +", values =('"+ str(prod_1[i][1]) +"', '"+ str(prod_1[i][2]) +"' ))")
+        
+        c , prod_2 = self.datos.ver_productos_2()
+        for i in range(0,c):
+            eval ("self.productos_tabla.insert('', 0 , text=" + str(prod_2[i][0]) +", values =('"+ str(prod_2[i][1]) +"', '"+ str(prod_2[i][2]) +"' ))")
+
+        c , prod_3 = self.datos.ver_productos_3()
+        for i in range(0,c):
+            eval ("self.productos_tabla.insert('', 0 , text=" + str(prod_3[i][0]) +", values =('"+ str(prod_3[i][1]) +"', '"+ str(prod_3[i][2]) +"' ))")
+
+
 
     #en esta funcion va el codigo para registrar un nuevo producto en un nuevo pedido
     def registrar_producto_fun(self):
         if(self.entry_cantidad.get()!=''):
             try:
-                self.id_pedido = self.productos_tabla.item(self.productos_tabla.selection())['text']
-                self.direccion_pedido = \
-                self.productos_tabla.item(self.productos_tabla.selection())['values'][0]
-                self.fecha_pedido = \
-                self.productos_tabla.item(self.productos_tabla.selection())['values'][1]
-                self.costo_pedido = \
-                self.productos_tabla.item(self.productos_tabla.selection())['values'][2]
+                self.id_producto = self.productos_tabla.item(self.productos_tabla.selection())['text']
+                self.nombre_producto = self.productos_tabla.item(self.productos_tabla.selection())['values'][0]
+                self.precio_producto = self.productos_tabla.item(self.productos_tabla.selection())['values'][1]
 
             except:
                 pass
-
-            if (self.id_pedido != ''):
-                #create del producto con tales y tales
-                self.mi_cantidad.set('')
-                pass
+            self.datos.agregar_pedido_producto(self.id_producto,self.nombre_producto,self.precio_producto,self.entry_cantidad.get())
+            print('product agregado')
 
 
+    def agregar_pedido_fun(self):
+        self.datos.terminar_pedido()
+        print('pedido agregado')
 
 
 
 
     def limpiartablas(self):
         for item in self.pedidos_pendientes_tabla .get_children():
-            self.pedidos_pendientes_tabla .delete(item)
+            self.pedidos_pendientes_tabla.delete(item)
 
         for item in self.pedidos_recibidos_tabla .get_children():
-            self.pedidos_recibidos_tabla .delete(item)
+            self.pedidos_recibidos_tabla.delete(item)
 
         for item in self.pedido_producto_tabla .get_children():
-            self.pedido_producto_tabla .delete(item)
+            self.pedido_producto_tabla.delete(item)
         
         for item in self.recibido_producto_tabla .get_children():
-            self.recibido_producto_tabla .delete(item)
+            self.recibido_producto_tabla.delete(item)
+
+        for item in self.productos_tabla.get_children():
+            self.productos_tabla.delete(item)
 
     def limpiarventana(self):
         self.limpiartablas()
@@ -517,7 +552,6 @@ class Frame(tk.Frame):
         self.lab_direccion.grid_forget()
         self.label_fecha_entrega.grid_forget()
         self.lab_fecha_entrega.grid_forget()
-        self.label_cantidad.grid_forget()
         #self.lab_cantidad.grid_forget()
         self.continuar_bot.grid_forget()
         self.registrar_producto_bot.grid_forget()
@@ -536,3 +570,10 @@ class Frame(tk.Frame):
         self.p_lab_correo.grid_forget()
         self.p_lab_direccion.grid_forget()
 
+        self.label_cantidad.grid_forget()
+        self.entry_cantidad.grid_forget()
+        self.productos_tabla.grid_forget()
+        self.scroll_productos.grid_forget()
+
+        self.label_perfil_cantidad.grid_forget()
+        self.p_lab_cantidad.grid_forget()

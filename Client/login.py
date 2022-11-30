@@ -50,8 +50,6 @@ class Login(Frame):
 		self.master.withdraw()
 		self.salir()
 
-		
-
 
 		root = Tk()
 		root.title('Maria Camila Pasteleria')

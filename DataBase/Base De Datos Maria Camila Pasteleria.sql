@@ -19,7 +19,7 @@ CREATE TABLE cliente
 (
 	ID_cliente	 			int	 		 PRIMARY KEY, 
     cli_nombre				varchar(80)	 NOT NULL,
-    cli_numero				int			 NOT NULL,
+    cli_numero				bigint			 NOT NULL,
     cli_correo				varchar(80)	 NOT NULL,
     cli_direccion			varchar(80)	 NULL
 );
@@ -126,7 +126,7 @@ CREATE TABLE pedido
     ped_costo				int			  NOT NULL
 );
 
-insert into pedido values(999, 1032356058 , 'cra 20A #171-31'        , '2022-01-04' , '2022-01-07', 'Entregado' , 58000); 
+insert into pedido values(1000, 1032356058 , 'cra 20A #171-31'        , '2022-01-04' , '2022-01-07', 'Entregado' , 58000); 
 insert into pedido values(1001, 1000356059, 'cra 45A #26-53'         , '2022-02-15' , '2022-02-17', 'Entregado' , 48000); 
 insert into pedido values(1002, 1032356058, 'cra 19A #30-11'         , '2022-03-09' , '2022-03-12', 'Entregado' , 105000);
 insert into pedido values(1003, 1032356057, 'cra 18A #75-90'         , '2022-03-19' , '2022-03-22', 'Entregado' , 21000);
@@ -139,7 +139,7 @@ insert into pedido values(1009, 1038123456, 'calle 63 #68-56 bis sur', '2022-04-
 insert into pedido values(1010, 1032356058, 'cra 19A #30-11'         , '2022-05-09' , '2022-05-12', 'Entregado' , 140000);
 insert into pedido values(1011, 52267126  , 'cra 20A #171-31'        , '2022-06-04' , '2022-06-07', 'Entregado' , 270000);
 insert into pedido values(1012, 1000356059, 'cra 67D #59-68'         , '2022-06-15' , '2022-06-17', 'Entregado' , 48000);
-insert into pedido values(1016, 1032356058, 'cra 20A #171-31'        , '2022-10-29' , '2022-10-31', 'Pendiente', 42000);
+insert into pedido values(1013, 1032356058, 'cra 20A #171-31'        , '2022-10-29' , '2022-10-31', 'Pendiente', 42000);
 
 CREATE TABLE pedido_producto
 (

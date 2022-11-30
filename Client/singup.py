@@ -3,17 +3,18 @@ from tkinter import  StringVar,END,HORIZONTAL,Frame,Toplevel
 import time
 import conexion, main_menu, login
 
-doc_entry = 0
+ID_usuario_g = 0
+PASSWRD_g = ''
 
 class Login(Frame):
 	def __init__(self, master, *args):
 		super().__init__( master,*args)
-		self.user_marcar = "Ingrese su correo"
+		self.user_marcar = "Ingrese su documento"
 		self.contra_marcar = "Ingrese su contraseña"
 		self.telefono_marcar = "Ingrese su telefono"
 		self.direccion_marcar = "Ingrese su dirección"
 		self.nombre_marcar = "Ingrese su nombre"
-		self.documento_marcar = "Ingrese su documento"
+		self.documento_marcar = "Ingrese su correo"
 		self.datos = conexion.Registro_datos(conexion.usr, conexion.psswrd)
 		self.widgets()
 
@@ -41,21 +42,6 @@ class Login(Frame):
 		self.master.destroy()
 		self.master.quit()
 
-	def acceder_main(self):
-		self.master.withdraw()
-		self.salir()
-
-		root = Tk()
-		root.title('Maria Camila Pasteleria')
-		# p5 = PhotoImage(file = 'Client/logo.png')
-		# root.iconphoto(False, p5)
-		root.config(bg='#FFDDDD')
-		hight = (root.winfo_screenheight())/2
-		width = (root.winfo_screenwidth())/2
-		root.geometry('1100x650+{}+{}'.format(int(width-550),int(hight-325)))
-		root.resizable(0,0)		
-		main_menu.Frame(root = root)		
-		root.mainloop()	
 
 	def agregar_datos(self):
 		self.indica1['text'] = ''
@@ -64,28 +50,27 @@ class Login(Frame):
 		self.indica4['text'] = ''
 		self.indica5['text'] = ''
 		self.indica6['text'] = ''
-		users_entry = self.entry1.get()
+		doc_entry = self.entry1.get()
 		password_entry = self.entry2.get()
 		name_entry = self.entry3.get()
-		doc_entry = self.entry4.get()
+		users_entry = self.entry4.get()
 		phone_entry = self.entry5.get()
 		dir_entry = self.entry6.get()
 
 		if '@' not in users_entry:
-			self.indica1['text'] = ' Correo  invalido'
+			self.indica4['text'] = ' Correo  invalido'
 		
 		if doc_entry.isdigit() == False:
-			self.indica4['text'] = ' Documento  invalido'
+			self.indica1['text'] = ' Documento  invalido'
 
 		if phone_entry.isdigit() == False:
 			self.indica5['text'] = ' Telefono  invalido'
 			
-		if '@' in users_entry and doc_entry.isdigit() == True  and  phone_entry.isdigit() == True :
-			self.datos.crear_cliente(users_entry, name_entry, phone_entry, dir_entry, doc_entry)
+		if '@' in users_entry and doc_entry.isdigit() == True  and  phone_entry.isdigit() == True and dir_entry != '' and name_entry != '' and password_entry != '' :
+			self.datos.crear_cliente(doc_entry, name_entry, phone_entry, users_entry, dir_entry)
 			self.datos.crear_login(doc_entry,users_entry,password_entry)
 
-			self.acceder_main()
-			return doc_entry
+			self.acceder_login()
 
 	
 
@@ -146,7 +131,7 @@ class Login(Frame):
 		
 
 		#ingrese docuemnto
-		self.label_documento = Label(self.master, text= 'Documento', bg='#FFDDDD', fg= 'black', 
+		self.label_documento = Label(self.master, text= 'Correo', bg='#FFDDDD', fg= 'black', 
 			font= ('Lucida Sans', 16, 'bold', 'italic'))
 		self.entry4 = Entry(self.master, font=('Comic Sans MS', 12),justify = 'center', fg='grey',highlightbackground = "#B88BAD", 
 			highlightcolor= "#A5F8CE", highlightthickness=3)
@@ -225,4 +210,3 @@ class Login(Frame):
 		app = login.Login(ventana)
 		app.mainloop()
 	
-doc_entry = Login.agregar_datos
